@@ -17,11 +17,22 @@ The detection is performed by a Bash script `checker.sh` which analyzes the npm 
 ```
 
 - The script takes one argument: the path to the npm project whose installed packages you want to check.
-- It requires access to the `shai-hulud-2-packages.csv` file, which contains the compromised package versions.
+- It requires access to the `shai-hulud-2-packages.csv` file, which contains the compromised package versions ([source](https://github.com/wiz-sec-public/wiz-research-iocs/blob/main/reports/shai-hulud-2-packages.csv)).
 - The script outputs a summary including:
   - Total installed packages analyzed
   - Packages with confirmed issues (versions known to be compromised)
   - Packages with potential issues (installed version close to impacted versions)
+
+### Recursively check all immediate npm projects under a base directory
+
+You can now use the `-r` option to recursively check all npm projects under a base directory. Note that this only checks the immediate subdirectories (depth 0) of the given path.
+
+```bash
+./checker.sh -r /path/to/base-directory
+```
+
+- This will scan each immediate subdirectory for a `package.json` file and run the check on those npm projects.
+- This option helps to quickly audit many related projects in one go while avoiding deep recursive scanning.
 
 ## CSV File
 
@@ -34,7 +45,7 @@ another-package,= x.y.z
 ...
 ```
 
-This list is periodically updated based on newly discovered impacted packages.
+[source](https://github.com/wiz-sec-public/wiz-research-iocs/blob/main/reports/shai-hulud-2-packages.csv)
 
 ## Related Articles
 
